@@ -8,7 +8,9 @@ const { flights } = require('./test-data/flightSeating');
 const PORT = process.env.PORT || 8000;
 
 const handleFlights = (req, res) => {
+  // get all flight numbers
   const allFlights = Object.keys(flights);
+  //Send back an array of the flight numbers
   res.status(200).send(allFlights);
 }
 
@@ -16,8 +18,12 @@ const handleFlight = (req, res) => {
   const { flightNumber } = req.params;
   // get all flight numbers
   const allFlights = Object.keys(flights);
-  // is flightNumber in the array?
-  console.log('REAL FLIGHT: ', allFlights.includes(flightNumber));
+  // is flightNumber in the array? Yes => send flight info. No => throw error
+  if(allFlights.includes(flightNumber)) {
+    res.status(200).send(flights[flightNumber]);
+  } else {
+    throw new Error('Problem in flightSeating.js');
+  }
 };
 
 express()
