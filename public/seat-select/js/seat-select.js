@@ -4,6 +4,20 @@ const confirmButton = document.getElementById('confirm-button');
 
 let selection = '';
 
+const renderFlightsMenu = async () => {
+  //get an array with the names of the flights
+  const res = await fetch('http://localhost:8000/flights');
+  const allFlights = await res.json();
+
+  //Create an option for each flight and append to the select element
+  allFlights.forEach(flight => {
+    const option = document.createElement('option');
+    option.text = flight;
+    option.value = flight;
+    document.getElementById('flight').appendChild(option);
+  })
+}
+
 const renderSeats = () => {
   document.querySelector('.form-container').style.display = 'block';
 
@@ -74,4 +88,5 @@ const handleConfirmSeat = (event) => {
   });
 };
 
+renderFlightsMenu();
 flightInput.addEventListener('blur', toggleFormContent);

@@ -7,6 +7,11 @@ const { flights } = require('./test-data/flightSeating');
 
 const PORT = process.env.PORT || 8000;
 
+const handleFlights = (req, res) => {
+  const allFlights = Object.keys(flights);
+  res.status(200).send(allFlights);
+}
+
 const handleFlight = (req, res) => {
   const { flightNumber } = req.params;
   // get all flight numbers
@@ -30,6 +35,7 @@ express()
   .use(express.urlencoded({ extended: false }))
 
   // endpoints
+  .get('/flights/', handleFlights)
   .get('/flights/:flightNumber', handleFlight)
   .use((req, res) => res.send('Not Found'))
   .listen(PORT, () => console.log(`Listening on port ${PORT}`));
