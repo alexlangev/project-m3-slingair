@@ -84,20 +84,29 @@ const toggleFormContent = (event) => {
   renderSeats();
 };
 
-const handleConfirmSeat = (event) => {
+const handleConfirmSeat = async (event) => {
   event.preventDefault();
-  // TODO: everything in here!
-  fetch('/users', {
+  const res = await fetch('/users', {
     method: 'POST',
     body: JSON.stringify({
+      seat: selection,
+      flight: document.getElementById('flight').value,
       givenName: document.getElementById('givenName').value,
+      surname: document.getElementById('surname').value,
+      email: document.getElementById('email').value,
     }),
     headers: {
       Accept: 'application/json',
       'Content-Type': 'application/json',
     },
-  });
-};
+  })
+  const resData = await res.json();
+  if (resData.status === 'success'){
+    window.location = `/seat-select/confirmed.html?id=${resData.id}`;
+  }
+}
+
+
 
 renderFlightsMenu();
 flightInput.addEventListener('blur', toggleFormContent);
