@@ -106,7 +106,5 @@ const handleConfirmSeat = async (event) => {
   }
 }
 
-
-
 renderFlightsMenu();
-flightInput.addEventListener('blur', toggleFormContent);
+flightInput.addEventListener('change', toggleFormContent);

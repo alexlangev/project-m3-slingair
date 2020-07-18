@@ -9,10 +9,15 @@ const  {reservations } = require('./test-data/reservations');
 const PORT = process.env.PORT || 8000;
 
 const handleFlights = (req, res) => {
-  // get all flight numbers
-  const allFlights = Object.keys(flights);
-  //Send back an array of the flight numbers
-  res.status(200).send(allFlights);
+  try {
+    // get all flight numbers
+    const allFlights = Object.keys(flights);
+    //Send back an array of the flight numbers
+    res.status(200).send(allFlights);
+  } catch (err) {
+    console.log(err);
+    res.status(500).send('Internal Error!');
+  }
 }
 
 const handleFlight = (req, res) => {
@@ -23,25 +28,26 @@ const handleFlight = (req, res) => {
   if(allFlights.includes(flightNumber)) {
     res.status(200).send(flights[flightNumber]);
   } else {
-    throw new Error('Problem in flightSeating.js');
+    console.log(err);
+    res.status(500).send('Internal Error!');
   }
 };
 
 const handleUsers = (req, res) => {
   const data = req.body;
-  const id = Math.random();
-  //reservation id
-  const reservation = {
-    seat: data.seat,
-    flight: data.flight,
-    givenName: data.givenName,
-    surname: data.surname,
-    email: data.email,
-    id: id
-  }
-  reservations.push(reservation);
-  //create reservation info and push it
-  res.status(200).send({status: 'success', id: reservation.id});
+    //reservation id
+    const id = Math.random();
+    //create reservation info and push it
+    const reservation = {
+      seat: data.seat,
+      flight: data.flight,
+      givenName: data.givenName,
+      surname: data.surname,
+      email: data.email,
+      id: id
+    }
+    reservations.push(reservation);
+    res.status(200).send({id: reservation.id, status: 'success'});
 }
 
 const handleReservationId = (req,res) => {
